@@ -21,7 +21,8 @@ int main() {
   printf("Batarya Sıcaklığı (°C): ");
   scanf("%f", &batarya_sicakligi);
   if (batarya_sicakligi < -100.0f || batarya_sicakligi > 200.0f) {
-    printf("SONUÇ: HATA: İmkansız sıcaklık verisi. Sensör arızası olabilir.\n");
+    printf("SONUÇ: KRİTİK HATA: İmkansız sıcaklık verisi. Sensör arızası "
+           "olabilir.\n");
     return 1; // Programı hata koduyla (1) sonlandır.
   }
 
@@ -29,7 +30,7 @@ int main() {
   printf("Şarj Yüzdesi (%%): ");
   scanf("%d", &sarj_yuzdesi);
   if (sarj_yuzdesi < 0 || sarj_yuzdesi > 100) {
-    printf("SONUÇ: HATA: İmkansız şarj seviyesi (%%%d). Lütfen sensör "
+    printf("SONUÇ: KRİTİK HATA: İmkansız şarj seviyesi (%d). Lütfen sensör "
            "verilerini kontrol edin.\n",
            sarj_yuzdesi);
     return 1;
@@ -41,7 +42,7 @@ int main() {
   // atlamasını sağlar!
   scanf(" %c", &kapi_durumu);
   if (kapi_durumu != 'A' && kapi_durumu != 'K') {
-    printf("SONUÇ: HATA: Geçersiz kapı durumu. Sadece 'A' veya 'K' "
+    printf("SONUÇ: KRİTİK HATA: Geçersiz kapı durumu. Sadece 'A' veya 'K' "
            "girilmelidir.\n");
     return 1;
   }
@@ -50,8 +51,8 @@ int main() {
   printf("Fren Pedalı (1:Basılı, 0:Değil): ");
   scanf("%d", &fren_pedali);
   if (fren_pedali != 0 && fren_pedali != 1) {
-    printf(
-        "SONUÇ: HATA: Geçersiz fren verisi. Sadece 1 veya 0 girilmelidir.\n");
+    printf("SONUÇ: KRİTİK HATA: Geçersiz fren verisi. Sadece 1 veya 0 "
+           "girilmelidir.\n");
     return 1;
   }
 

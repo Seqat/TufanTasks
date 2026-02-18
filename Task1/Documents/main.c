@@ -55,5 +55,51 @@ int main() {
     return 1;
   }
 
+  // ====================================================================
+  // AŞAMA 2: İŞ MANTIĞI VE ÖNCELİK SIRALAMASI (BUSINESS LOGIC)
+  // Sensör verileri artık fiziksel olarak geçerli. Şimdi yarış kurallarını
+  // istenilen öncelik sırasına göre (Sıcaklık -> Şarj -> Kapı -> Fren) test
+  // ediyoruz.
+  // ====================================================================
+
+  printf("\n");
+
+  // Sistemde uyarı olup olmadığını takip edeceğimiz FLAG (Bayrak) değişkeni
+  // 0 = Uyarı yok (Temiz)
+  // 1 = Uyarı var (Kirli)
+  int uyari_var = 0;
+
+  // Dikkat: Burada "else if" yerine sadece "if" kullanıyoruz.
+  // Böylece program her bir şartı tek tek, birbirinden bağımsız test edecek.
+
+  if (batarya_sicakligi > 60.0f) {
+    printf("SONUÇ: UYARI: Motor Aşırı Isındı! Sürüş Engellendi.\n");
+    uyari_var = 1; // Uyarı bulduğumuz için bayrağı kaldırdık (raised the flag)
+  }
+
+  if (sarj_yuzdesi < 10) {
+    printf("SONUÇ: UYARI: Batarya Kritik Seviyede! Sürüş Başlatılamaz.\n");
+    uyari_var = 1;
+  }
+
+  if (kapi_durumu == 'A') {
+    printf("SONUÇ: UYARI: Kapılar Açık! Lütfen Kapatınız.\n");
+    uyari_var = 1;
+  }
+
+  if (fren_pedali == 0) {
+    printf("SONUÇ: UYARI: Güvenlik için frene basarak tekrar deneyin.\n");
+    uyari_var = 1;
+  }
+
+  // Eğer uyari_var bayrağı kalkmamışsa (hala 0 ise)
+  if (!uyari_var) {
+    printf("SONUÇ: BAŞARILI: SİSTEM HAZIR. MOTOR BAŞLATILIYOR...\n");
+  } else {
+    // Eğer uyari_var 1 (veya herhangi bir sayı) olduysa
+    printf("SİSTEM MESAJI: Lütfen motoru başlatmadan önce yukarıdaki uyarıları "
+           "giderin.\n");
+  }
+
   return 0;
 }

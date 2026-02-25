@@ -16,6 +16,7 @@
 //   - Global değişken kullanmamış oluruz (Gömülü Sistem standardı).
 //   - Veriye sadece bu dosyadaki fonksiyonlar aracılığıyla erişilir.
 //
+// Encapsulation için struct kullanmakta mümkün, ama ödevin kapsamından dol
 // Neden Pointer Kullanmıyoruz?
 // ----------------------------
 // Pointer'lar güçlü ama tehlikelidir (Dangling Pointer, Memory Leak vb.).
@@ -55,7 +56,7 @@ static float
     yavaslama_kayitlari[MAX_KAYIT];      // Fren basınca oluşan hız düşüşleri
 static float rejen_kayitlari[MAX_KAYIT]; // Rejen frende oluşan hız düşüşleri
 
-// Dizilerde kaç eleman olduğunu takip eden sayaçlar
+// Dizilerde kaç eleman olduğunu takip eden sayaçlar (counter)
 static int hizlanma_sayisi = 0;
 static int yavaslama_sayisi = 0;
 static int rejen_sayisi = 0;
@@ -115,9 +116,17 @@ void gaza_bas(void) {
     return; // Fonksiyondan erken çıkış (Early Return)
   }
 
+  // Sınır Durum: Araç zaten maksimum hızdaysa
+  if (hiz >= 70.0f) {
+    printf("[UYARI] Maksimum hıza (70.0 km/s) ulaşıldı! Daha fazla "
+           "hızlanamazsınız.\n");
+    return;
+  }
+
   // Rastgele hız artışı hesapla: 2.0 - 10.0 km/s (0.1 adımlarla)
   // rand() % 81 → 0..80 arası üretir, /10.0 → 0.0..8.0, +2.0 → 2.0..10.0
   float artis = 2.0f + (rand() % 81) / 10.0f;
+  float eski_hiz = hiz;
 
   // Hızı artır
   hiz = hiz + artis;
@@ -126,6 +135,9 @@ void gaza_bas(void) {
   if (hiz > 70.0f) {
     hiz = 70.0f; // Hızı üst sınıra sabitle
   }
+
+  // Gerçekten ne kadar hızlandığını hesapla (sınır aşılmış olabilir)
+  artis = hiz - eski_hiz;
 
   // Batarya tüketimi: Gaza basınca yüksek akım çekilir → %2 azalır
   batarya = batarya - 2;
@@ -173,6 +185,7 @@ void frene_bas(void) {
   // Rastgele hız düşüşü: 5.0 - 15.0 km/s (0.1 adımlarla)
   // rand() % 101 → 0..100, /10.0 → 0.0..10.0, +5.0 → 5.0..15.0
   float dusus = 5.0f + (rand() % 101) / 10.0f;
+  float eski_hiz = hiz;
 
   // Hızı azalt
   hiz = hiz - dusus;
@@ -181,6 +194,9 @@ void frene_bas(void) {
   if (hiz < 0.0f) {
     hiz = 0.0f;
   }
+
+  // Gerçekten ne kadar yavaşladığını hesapla (sınır aşılmış olabilir)
+  dusus = eski_hiz - hiz;
 
   // Termal etki: Motor yük binmediği ve rüzgar soğutması olduğu için soğur
   motor_sicaklik = motor_sicaklik - 3.0f;
@@ -226,12 +242,16 @@ void rejen_fren(void) {
 
   // Rastgele hız düşüşü: 2.0 - 10.0 km/s (0.1 adımlarla)
   float dusus = 2.0f + (rand() % 81) / 10.0f;
+  float eski_hiz = hiz;
 
   // Hızı azalt
   hiz = hiz - dusus;
   if (hiz < 0.0f) {
     hiz = 0.0f;
   }
+
+  // Gerçekten ne kadar yavaşladığını hesapla (sınır aşılmış olabilir)
+  dusus = eski_hiz - hiz;
 
   // Bataryayı şarj et: Kinetik enerji → Elektrik enerjisi
   batarya = batarya + 1;

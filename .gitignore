@@ -53,3 +53,8 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Tasks compiled files
+Task1/main
+Task2/simulation
+

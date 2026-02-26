@@ -174,6 +174,8 @@ void gaza_bas(void) {
 // Sınır Durumlar:
 //   - Araç zaten durmuşsa (hız = 0) uyarı ver
 //   - Hız negatife düşemez (minimum 0.0 km/s)
+//   - Soğuma en fazla 20°C'ye kadar olabilir. Yani sıcaklık 20°C'nin altına
+//   düşemez.
 // =============================================================================
 void frene_bas(void) {
   // Sınır Durum: Araç zaten duruyorsa frene basmanın anlamı yok
@@ -193,6 +195,15 @@ void frene_bas(void) {
   // Sınır Durum: Hız negatif olamaz
   if (hiz < 0.0f) {
     hiz = 0.0f;
+  }
+
+  // Sınır Durum: Soğuma en fazla 20°C'ye kadar olabilir. Yani sıcaklık 20°C'nin
+  // altına düşemez.
+  if (motor_sicaklik < 20.0f) {
+    motor_sicaklik = 20.0f;
+  }
+  if (batarya_sicaklik < 20.0f) {
+    batarya_sicaklik = 20.0f;
   }
 
   // Gerçekten ne kadar yavaşladığını hesapla (sınır aşılmış olabilir)
@@ -226,18 +237,32 @@ void frene_bas(void) {
 // Mekanik:
 //   - Hız düşüşü: 2.0 ile 10.0 km/s arası rastgele
 //   - Batarya şarjı: +1% (enerji geri kazanımı)
-//   - Termal etki: Motor +1°C, Batarya +1°C (enerji dönüşümü ısı üretir)
+//   - Termal etki: Motor -2°C, Batarya +1°C (enerji dönüşümü ısı üretir)
 //
 // Sınır Durumlar:
 //   - Araç duruyorsa rejen çalışmaz
 //   - Batarya %100'ü geçemez
 //   - Hız negatife düşemez
+//   - Sıcaklık 20°C'nin altına düşemez
 // =============================================================================
 void rejen_fren(void) {
   // Sınır Durum: Araç duruyorsa kinetik enerji yok, rejen çalışmaz
   if (hiz <= 0.0f) {
     printf("[UYARI] Araç duruyor. Rejeneratif frenleme yapılamaz.\n");
     return;
+  }
+  // Sınır Durum: Batarya %100'ü geçemez
+  if (batarya >= 100) {
+    printf("[UYARI] Batarya %%100 dolu. Rejeneratif frenleme yapılamaz.\n");
+    return;
+  }
+
+  // Sınır Durum: Sıcaklık 20°C'nin altına düşemez
+  if (motor_sicaklik < 20.0f) {
+    motor_sicaklik = 20.0f;
+  }
+  if (batarya_sicaklik < 20.0f) {
+    batarya_sicaklik = 20.0f;
   }
 
   // Rastgele hız düşüşü: 2.0 - 10.0 km/s (0.1 adımlarla)
@@ -259,8 +284,9 @@ void rejen_fren(void) {
     batarya = 100; // Batarya %100'ü aşamaz
   }
 
-  // Termal etki: Enerji dönüşümü her zaman biraz ısı üretir
-  motor_sicaklik = motor_sicaklik + 1.0f;
+  // Termal etki: Enerji dönüşümü her zaman batarya üzerinde biraz ısı üretir
+  //              Motor sıcaklığı düşer
+  motor_sicaklik = motor_sicaklik - 2.0f;
   batarya_sicaklik = batarya_sicaklik + 1.0f;
 
   // İstatistik: Rejen frenleme kaydı

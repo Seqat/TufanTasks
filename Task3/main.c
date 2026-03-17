@@ -42,7 +42,7 @@ int main(void) {
     }
     printf("\n");
 
-    switch (secim) {
+    switch (secim) { 
     case 1:
       // Sensorden mesaj uret (Enqueue)
       printf("Sensor Adi: ");

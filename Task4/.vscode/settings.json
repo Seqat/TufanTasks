@@ -1,0 +1,6 @@
+{
+  "stm32-for-vscode.openOCDPath": "/Users/melekzevit/Library/Application Support/Antigravity/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-tools/openocd/0.12.0-7.1/.content/bin/openocd",
+  "stm32-for-vscode.armToolchainPath": "/Users/melekzevit/Library/Application Support/Antigravity/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-tools/arm-none-eabi-gcc/15.2.1-1.1.1/.content/bin",
+  "cortex-debug.armToolchainPath": "/Users/melekzevit/Library/Application Support/Antigravity/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-tools/arm-none-eabi-gcc/15.2.1-1.1.1/.content/bin",
+  "cortex-debug.openocdPath": "/Users/melekzevit/Library/Application Support/Antigravity/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-tools/openocd/0.12.0-7.1/.content/bin/openocd"
+}

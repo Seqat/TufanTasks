@@ -1,0 +1,25 @@
+# Build directories
+build/
+Debug/
+Release/
+
+# Object files
+*.o
+*.os
+*.obj
+*.su
+
+# Compiled output
+*.elf
+*.bin
+*.hex
+*.map
+*.d
+
+# STM32CubeIDE / STM32 for VSCode generated files
+.mxproject
+.stm32env
+STM32Make.make
+
+# VSCode settings (optional, uncomment if you don't want to track them)
+# .vscode/

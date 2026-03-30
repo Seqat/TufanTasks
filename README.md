@@ -8,4 +8,4 @@ Assignment files and some annotated code examples provided to team members by th
 
 - [Week 3: Araç İçi Haberleşme (CAN Bus Mesaj Kuyruğu)](https://github.com/Seqat/TufanHomeworks/tree/main/Task3)
 
-- [Week 4: Araç İçi Haberleşme (CAN Bus Mesaj Kuyruğu)](https://github.com/Seqat/TufanHomeworks/tree/main/Task4)
+- [Week 4: STM32 ile Araç Sensör Panosu](https://github.com/Seqat/TufanHomeworks/tree/main/Task4)
